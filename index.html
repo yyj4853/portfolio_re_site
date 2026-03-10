@@ -4,16 +4,190 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GRANHAND. - 향의 일상화</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
-    <script src="app.js" defer></script>
+    <style>
+        /* --- Design Tokens & Variables --- */
+        :root {
+            --color-bg: #F9F8F6; /* 따뜻하고 차분한 오프화이트 */
+            --color-text-main: #222222;
+            --color-text-sub: #888888;
+            --color-border: #EBEAE8;
+            
+            --font-main: 'Helvetica Neue', 'Apple SD Gothic Neo', sans-serif;
+            
+            --header-height: 80px;
+        }
+
+        /* --- Global Styles --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text-main);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* --- Header Layout --- */
+        .topheader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--header-height);
+            z-index: 1000;
+            transition: background-color 0.4s ease, backdrop-filter 0.4s ease, border-bottom 0.4s ease;
+        }
+
+        .topheader.scrolled {
+            background-color: rgba(249, 248, 246, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .headerinner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 100%;
+            padding: 0 40px;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+        }
+
+        .gnb {
+            display: flex;
+            gap: 40px;
+        }
+
+        .gnb a {
+            font-size: 0.9rem;
+            color: var(--color-text-sub);
+            transition: color 0.3s ease;
+        }
+
+        .gnb a:hover {
+            color: var(--color-text-main);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--color-text-sub);
+            max-width: 500px;
+            word-break: keep-all;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* --- Signature Collection --- */
+        .collection {
+            padding: 120px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 80px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 60px;
+        }
+
+        .product-card {
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .img-box {
+            background-color: #EFEFEF;
+            aspect-ratio: 3/4;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease;
+        }
+
+        /* 이미지 호버 시 부드러운 떠오름 효과 */
+        .product-card:hover .img-box {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+        }
+
+        .product-info h3 {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .product-info p {
+            font-size: 0.85rem;
+            color: var(--color-text-sub);
+        }
+
+        /* --- Footer --- */
+        .footer {
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 0.85rem;
+            color: var(--color-text-sub);
+            border-top: 1px solid var(--color-border);
+            margin-top: 60px;
+        }
+    </style>
 </head>
 <body>
+
     <header class="topheader">
         <div class="headerinner">
             <a href="#" class="logo">GRANHAND.</a>
             <nav class="gnb">
-                <a href="#fragrance">Fragrance</a>
+                <a href="#collection">Fragrance</a>
                 <a href="#journal">Journal</a>
                 <a href="#stores">Stores</a>
             </nav>
@@ -22,47 +196,91 @@
 
     <main>
         <section class="hero">
-            <div class="ambient-light"></div>
-            <div class="hero-text fade-up">
-                <h1>Breathe in Seoul</h1>
-                <p>일상의 경계에서 피어나는 깨끗하고 절제된 향기.</p>
-            </div>
+            <h1 class="fade-up">향의 일상화</h1>
+            <p class="fade-up">보이지 않는 향기가 당신의 공간과 기억 속에 머무릅니다. 불필요한 장식을 덜어내고 본질에 집중한 향을 경험해보세요.</p>
         </section>
 
-        <section id="fragrance" class="product-showcase">
-            <div class="section-title fade-up">
-                <h2>Signature Collection</h2>
-                <p>본질에 집중한 프리미엄 라인업</p>
-            </div>
+        <section id="collection" class="collection">
+            <h2 class="section-title scroll-reveal">Signature Collection</h2>
             
             <div class="grid-container">
-                <article class="product-card fade-up">
-                    <div class="image-wrapper">
-                        <div class="product-mockup"></div>
-                    </div>
+                <article class="product-card scroll-reveal">
+                    <div class="img-box"></div>
                     <div class="product-info">
                         <h3>Susie Salmon</h3>
-                        <span class="notes">Citrus, Floral, Woody</span>
+                        <p>Daydream, Citrus, Floral</p>
                     </div>
                 </article>
 
-                <article class="product-card fade-up">
-                    <div class="image-wrapper">
-                        <div class="product-mockup"></div>
-                    </div>
+                <article class="product-card scroll-reveal">
+                    <div class="img-box"></div>
                     <div class="product-info">
                         <h3>Kyujang</h3>
-                        <span class="notes">Fig leaf, Patchouli, Pepper</span>
+                        <p>Fig leaf, Patchouli, Pepper</p>
+                    </div>
+                </article>
+
+                <article class="product-card scroll-reveal">
+                    <div class="img-box"></div>
+                    <div class="product-info">
+                        <h3>Marine Orchid</h3>
+                        <p>Water, Orchid, Musk</p>
                     </div>
                 </article>
             </div>
         </section>
     </main>
-    
+
     <footer class="footer">
-        <p>GRANHAND. Seoul, Korea</p>
+        <p>© GRANHAND. All rights reserved.</p>
     </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // 1. 헤더 스크롤 배경 블러 및 보더 처리
+            const header = document.querySelector('.topheader');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // 2. 초기 로드 시 Hero 섹션 텍스트 애니메이션
+            const heroElements = document.querySelectorAll('.fade-up');
+            heroElements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.style.transition = 'opacity 1.2s ease, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)';
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, 150 + (index * 200)); // 순차적으로 등장
+            });
+
+            // 3. 스크롤 시 요소가 화면에 나타나는 효과 (Intersection Observer)
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15 // 요소가 15% 보일 때 트리거
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.transition = 'opacity 1s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1)';
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        observer.unobserve(entry.target); // 한 번 애니메이션 후 관찰 해제
+                    }
+                });
+            }, observerOptions);
+
+            const scrollElements = document.querySelectorAll('.scroll-reveal');
+            scrollElements.forEach((el) => {
+                observer.observe(el);
+            });
+        });
+    </script>
 </body>
 </html>
-
-
